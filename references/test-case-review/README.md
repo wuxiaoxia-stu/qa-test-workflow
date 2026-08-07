@@ -1,27 +1,9 @@
-# test-case-reviewer-plus (EN)
+# Test-Case Review Resources
 
-## Skill Overview
+These files support the `test-case-review` mode in `qa-test-workflow`.
 
-Need a stricter review of existing test cases before test execution or release; Need issue severity, business impact, and retest order to be explicit.
+- Read `test-case-review.md` for review criteria, severity, evidence, and delivery requirements.
+- Use `scripts/test-case-review/` to parse the exact supplied case artifact when needed.
+- Use `templates/test-case-review/` only when a structured review report is requested.
 
-## How to Use
-
-1. Open `SKILL.md` in this folder and confirm this skill fits your task.
-2. In your AI tool, call `@skill test-case-reviewer-plus`, then add your real project context and goal.
-3. If you need a specific output format (table, checklist, report), include it directly in your request.
-
-## One-Click Install Script
-
-Run from the repository root:
-
-### macOS / Linux
-
-```bash
-bash ./scripts/install-skills-mac.sh --tool codex --lang en --skill test-case-reviewer-plus
-```
-
-### Windows PowerShell
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\install-skills-windows.ps1 -Tool codex -Lang en -Skill test-case-reviewer-plus
-```
+Install and invoke the package through the repository-root [README](../../README.md). This directory is an internal resource area, not a standalone skill.

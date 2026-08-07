@@ -48,3 +48,16 @@ class SkillPackageTest(unittest.TestCase):
         self.assertIn("distinct data populations", skill)
         self.assertIn("later numbered supplement", generation)
         self.assertIn("multiple data populations", generation)
+
+    def test_nested_readmes_do_not_reference_migrated_skills(self):
+        root = Path(__file__).resolve().parents[1]
+        readmes = (
+            root / "references/requirements-analysis/README.md",
+            root / "references/test-case-review/README.md",
+        )
+
+        for readme in readmes:
+            text = readme.read_text(encoding="utf-8")
+            self.assertIn("qa-test-workflow", text)
+            self.assertNotIn("@skill", text)
+            self.assertNotIn("install-skills", text)
