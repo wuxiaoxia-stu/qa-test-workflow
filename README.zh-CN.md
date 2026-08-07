@@ -1,0 +1,86 @@
+# QA Test Workflow
+
+[English](README.md)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+`qa-test-workflow` 是一个用于端到端 QA 工作的 Codex skill，覆盖需求评审、测试用例生成和测试用例评审。它将已确认的需求事实、未解决的缺口和基于行业基线的候选项明确区分，使生成的用例保持可追溯、可评审。
+
+生成的 QA 交付物默认使用简体中文；API 名称、配置键、ID 和文档中的字面消息保持原样。
+
+## 能力
+
+| 模式 | 适用场景 | 主要交付物 |
+| --- | --- | --- |
+| `requirements-review` | 评审 PRD、用户故事、验收标准、API/UI 规范或需求的可测试性 | 需求理解、缺口、风险、可测试性影响、待澄清问题和后续建议 |
+| `test-case-generation` | 基于需求创建或补充测试用例 | 可追溯测试用例、覆盖矩阵、需求分析和最终用例评审 |
+| `test-case-review` | 在测试执行或发布前审计既有测试用例 | 按严重度分级的问题、缺失的高风险覆盖、回归顺序和残余风险 |
+
+该 skill 会自动选择模式。当请求同时包含需求和既有用例、但你希望明确产出时，请显式指定模式。
+
+## 安装
+
+当 skill 目录位于 Codex skills 目录下且包含 `SKILL.md` 时，Codex 会加载该个人 skill。
+
+### macOS 和 Linux
+
+```bash
+git clone https://github.com/wuxiaoxia-stu/qa-test-workflow.git
+mkdir -p ~/.codex/skills
+cp -R qa-test-workflow ~/.codex/skills/
+```
+
+### Windows PowerShell
+
+```powershell
+git clone https://github.com/wuxiaoxia-stu/qa-test-workflow.git
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.codex\skills" | Out-Null
+Copy-Item -Recurse -Force .\qa-test-workflow "$env:USERPROFILE\.codex\skills\"
+```
+
+安装后请新建一个 Codex 任务，使 skill 列表刷新。
+
+## 使用
+
+提供需求材料、已有用例和期望执行的动作。该 skill 支持 PRD、用户故事、验收标准、API/UI 规范、技术说明、发布范围、缺陷历史和既有测试用例。
+
+```text
+评审这份 PRD 的可测试性，并列出会阻塞发布的需求缺口。
+
+为这项 API 变更生成 Excel 测试用例，包含需求分析和最终用例评审。
+
+根据提供的验收标准，审计这些已有的结算测试用例。
+```
+
+在生成模式下，工作流先建立需求源清单并完成需求分析，再评审测试用例草稿，最后交付修订后的用例。已确认需求、因数据缺失而阻塞的条件性用例，以及由需求缺口派生的候选用例会被分别管理；候选用例不会计入已确认的验收覆盖。
+
+## 仓库结构
+
+```text
+SKILL.md                         面向模型的工作流与模式路由
+references/                      需求、生成和评审的详细指引
+scripts/                         常见交付物格式的标准库辅助脚本
+templates/                       输出模板
+examples/                        评审输入与输出样例
+evals/                           skill 评估用例
+tests/                           包完整性回归测试
+```
+
+## 本地验证
+
+内置脚本只依赖 Python 标准库。在仓库根目录运行：
+
+```bash
+python -m unittest discover -s tests -p 'test_*.py' -v
+python -m compileall -q scripts
+```
+
+在 Codex Desktop 中，如果系统 Python 不可用，请将 `python` 替换为其内置 Python 运行时。
+
+## 贡献与安全
+
+发起 Pull Request 前，请先阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。敏感问题应通过 [SECURITY.md](SECURITY.md) 中的私有渠道报告，不要在公开 Issue 中披露。
+
+## 许可证
+
+本项目采用 [MIT License](LICENSE) 许可。

@@ -1,5 +1,7 @@
 # QA Test Workflow
 
+[简体中文](README.zh-CN.md)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 `qa-test-workflow` is a single Codex skill for end-to-end QA work: requirements review, test-case generation, and test-case review. It keeps documented facts, unresolved gaps, and industry-baseline candidates visibly separate so generated cases remain traceable and reviewable.
