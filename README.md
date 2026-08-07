@@ -18,7 +18,7 @@ Generated QA artifacts default to Simplified Chinese. API names, configuration k
 
 The skill selects a mode automatically. State a mode explicitly when the request contains both requirements and existing test cases but you want a specific outcome.
 
-## Install
+## Install in Codex
 
 Codex loads a personal skill when its directory contains `SKILL.md` under the Codex skills directory.
 
@@ -39,6 +39,44 @@ Copy-Item -Recurse -Force .\qa-test-workflow "$env:USERPROFILE\.codex\skills\"
 ```
 
 Start a new Codex task after installation so the skill list is refreshed.
+
+## Install in Other Agents
+
+This repository follows the Agent Skills layout: install the entire `qa-test-workflow` directory, not only `SKILL.md`. The `references/`, `scripts/`, `templates/`, `examples/`, and `evals/` directories are part of the package.
+
+Clone the repository once, then copy its root directory to the target skills directory for your agent:
+
+```bash
+git clone https://github.com/wuxiaoxia-stu/qa-test-workflow.git
+```
+
+| Agent | Personal installation | Project installation | Notes |
+| --- | --- | --- | --- |
+| [Claude Code](https://code.claude.com/docs/en/skills) | `~/.claude/skills/qa-test-workflow/` | `.claude/skills/qa-test-workflow/` | Use personal scope across projects, or commit the project scope for a team. |
+| [Cursor](https://cursor.com/docs/context/skills) | `~/.cursor/skills/qa-test-workflow/` | `.cursor/skills/qa-test-workflow/` | Cursor also recognizes the compatible `.agents/skills/` layout. |
+| [Trae](https://forum.trae.cn/t/topic/19464) | `~/.trae-cn/skills/qa-test-workflow/` for the China edition | `.trae/skills/qa-test-workflow/` | Use the project path when a Trae edition exposes a different personal directory. |
+
+### File-Based Installation
+
+On macOS or Linux, replace `<skills-parent>` with one of the table's parent directories, such as `~/.claude/skills` or `.cursor/skills`:
+
+```bash
+mkdir -p <skills-parent>
+cp -R qa-test-workflow <skills-parent>/
+```
+
+On Windows PowerShell, use the target parent directory for the chosen agent:
+
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills" | Out-Null
+Copy-Item -Recurse -Force .\qa-test-workflow "$env:USERPROFILE\.claude\skills\"
+```
+
+For a project-scoped installation, run the equivalent commands from the project root and use `.claude/skills`, `.cursor/skills`, or `.trae/skills` as `<skills-parent>`. Open a new agent session after installation.
+
+### Tencent WorkBuddy
+
+Tencent WorkBuddy imports skills through its UI rather than a fixed file-system directory. Open **Skills** > **Add Skill** > **Import Local Skill Package**, then import the downloaded local package for this repository. Follow the import dialog if your client version requests a directory or an archive. Review `SKILL.md` and bundled scripts before granting an imported skill permissions.
 
 ## Use
 

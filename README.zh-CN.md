@@ -18,7 +18,7 @@
 
 该 skill 会自动选择模式。当请求同时包含需求和既有用例、但你希望明确产出时，请显式指定模式。
 
-## 安装
+## 在 Codex 中安装
 
 当 skill 目录位于 Codex skills 目录下且包含 `SKILL.md` 时，Codex 会加载该个人 skill。
 
@@ -39,6 +39,44 @@ Copy-Item -Recurse -Force .\qa-test-workflow "$env:USERPROFILE\.codex\skills\"
 ```
 
 安装后请新建一个 Codex 任务，使 skill 列表刷新。
+
+## 在其他 Agent 中安装
+
+本仓库遵循 Agent Skills 的目录规范：请安装完整的 `qa-test-workflow` 文件夹，而不只是 `SKILL.md`。`references/`、`scripts/`、`templates/`、`examples/` 和 `evals/` 均属于 skill 的组成部分。
+
+先克隆仓库一次，再将其根目录复制到对应 Agent 的 skills 目录：
+
+```bash
+git clone https://github.com/wuxiaoxia-stu/qa-test-workflow.git
+```
+
+| Agent | 个人级安装 | 项目级安装 | 说明 |
+| --- | --- | --- | --- |
+| [Claude Code](https://code.claude.com/docs/en/skills) | `~/.claude/skills/qa-test-workflow/` | `.claude/skills/qa-test-workflow/` | 个人级对所有项目生效；项目级可随代码仓库提交并供团队复用。 |
+| [Cursor](https://cursor.com/docs/context/skills) | `~/.cursor/skills/qa-test-workflow/` | `.cursor/skills/qa-test-workflow/` | Cursor 也兼容 `.agents/skills/` 目录规范。 |
+| [Trae](https://forum.trae.cn/t/topic/19464) | 中国版使用 `~/.trae-cn/skills/qa-test-workflow/` | `.trae/skills/qa-test-workflow/` | 若当前 Trae 发行版的个人目录不同，优先采用项目级路径。 |
+
+### 文件目录安装
+
+在 macOS 或 Linux 上，将 `<skills-parent>` 替换为上表中相应的父目录，例如 `~/.claude/skills` 或 `.cursor/skills`：
+
+```bash
+mkdir -p <skills-parent>
+cp -R qa-test-workflow <skills-parent>/
+```
+
+在 Windows PowerShell 中，将目标父目录替换为所选 Agent 的目录：
+
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.claude\skills" | Out-Null
+Copy-Item -Recurse -Force .\qa-test-workflow "$env:USERPROFILE\.claude\skills\"
+```
+
+安装到项目级目录时，请在项目根目录执行对应命令，并将 `<skills-parent>` 设置为 `.claude/skills`、`.cursor/skills` 或 `.trae/skills`。安装完成后新建一个 Agent 会话。
+
+### 腾讯 WorkBuddy
+
+腾讯 WorkBuddy 通过界面导入 skill，而不是扫描固定的文件系统目录。打开 **技能** > **添加技能** > **导入本地技能包**，再导入本仓库下载的本地技能包。如果当前客户端要求选择目录或压缩包，请以导入对话框提示为准；授予权限前应先审阅 `SKILL.md` 和其中引用的脚本。
 
 ## 使用
 
