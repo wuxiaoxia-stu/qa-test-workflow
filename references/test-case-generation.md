@@ -18,6 +18,7 @@ Follow these steps in order.
    - Treat Jira tickets, Jira IDs, and Jira links as optional metadata. Do not read, request, infer, or use Jira requirement content unless the user explicitly asks for Jira traceability.
    - Build a source inventory before analysis. Record every heading, numbered item, table row, figure, screenshot annotation, menu tree, and role/permission label that states or qualifies behavior. For browser-based documents, inspect the full page and all embedded images before concluding that the source has no additional requirements.
    - Preserve the source location for each inventory item. A numbered child requirement such as `2.1` or `3` is independently traceable even when the top-level requirement describes a related feature.
+   - When the user supplies a later numbered supplement or correction, treat it as new source material rather than a note on the previous output. Reopen the source inventory, requirements analysis, hierarchy, coverage matrix, and final review before delivery.
 
 2. Mandatory pre-generation requirements analysis:
    - Always complete this package's `requirements-review` phase after reading the source material and before generating test cases, even when the user asks only for final test cases or supplies a short requirement. A user-supplied analysis is additional input; it does not remove this gate.
@@ -41,6 +42,7 @@ Follow these steps in order.
    - Feature description and scope.
    - Explicit regression requirements such as "keep existing flow working" or "regression normal". Create confirmed regression cases using the published baseline as the oracle; do not discard them merely because the source does not enumerate every field or message.
    - Explicit permission, data-migration, cleanup, or configuration requirements. Missing configuration values or complete mappings limit the test data and can block execution, but do not erase the documented capability from coverage.
+   - When a cleanup names multiple data populations, preserve each named population as an independent direct behavior. When a role requirement states both configuration and a visibility limit, cover the configuration and the runtime data scope separately; do not collapse them into a generic list-exists case.
    - Category words such as "other", "etc.", "all", "only", "except", "new", or "independent". These change the coverage partition and must be represented in the analysis.
    - Acceptance criteria.
    - Business rules and calculations.

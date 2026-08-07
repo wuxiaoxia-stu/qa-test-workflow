@@ -40,11 +40,12 @@ Select one mode before producing content.
 ## test-case-generation
 
 1. Read `references/test-case-generation.md`, `references/requirements-analysis/requirements-analysis.md`, and `references/test-case-review/test-case-review.md`.
-2. Build a complete source inventory and run `requirements-review` as the first internal phase.
+2. Build a complete source inventory and run `requirements-review` as the first internal phase. Treat later user messages that add, correct, or number a requirement as source evidence: reopen the analysis and append the item before drafting or revising cases.
 3. Produce a draft only after the analysis exists. Map confirmed cases to the deepest documented requirement; map gap-derived candidates to a visible gap and named industry baseline.
 4. Create the required coverage matrix, then run `test-case-review` against the exact draft.
 5. Record a disposition for every review finding. Apply only findings supported by source facts, confirmed analysis facts, or an applicable industry baseline; retain unsupported findings as gaps or residual risks.
-6. Re-run the coverage matrix and `test-case-review` against the revised artifact. Deliver only the revised final cases, the analysis report, and the final review report unless the user asks for a draft comparison.
+6. When a requirement states distinct data populations, permissions, or scopes, preserve each stated behavior as an independent trace target. For example, a cleanup that names main and child records needs separate cleanup coverage; a role configuration and its runtime visibility scope need separate coverage. Missing mappings or fixtures block execution, not the documented capability's coverage.
+7. Re-run the coverage matrix and `test-case-review` against the revised artifact. Before delivery, reconcile every current source-inventory row, including late supplements and all numbered parent/child requirements, to a confirmed/conditional case or a visible gap. Deliver only the revised final cases, the analysis report, and the final review report unless the user asks for a draft comparison.
 
 ## Output Rules
 

@@ -36,3 +36,15 @@ class SkillPackageTest(unittest.TestCase):
 
         self.assertNotIn("invoke `requirements-analysis`", generation)
         self.assertNotIn("invoke `test-case-reviewer-plus`", generation)
+
+    def test_late_requirement_supplements_and_separate_scope_are_preserved(self):
+        root = Path(__file__).resolve().parents[1]
+        skill = (root / "SKILL.md").read_text(encoding="utf-8")
+        generation = (root / "references/test-case-generation.md").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("Treat later user messages", skill)
+        self.assertIn("distinct data populations", skill)
+        self.assertIn("later numbered supplement", generation)
+        self.assertIn("multiple data populations", generation)
