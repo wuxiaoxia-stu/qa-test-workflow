@@ -1,0 +1,21 @@
+id: generation-full-workflow
+title: "Test-case generation: complete review and revision workflow"
+description: "Generating cases from requirements includes analysis, coverage, review, revision, and final review."
+
+input:
+  prompt: |
+    Use qa-test-workflow to generate test cases for a points redemption checkout.
+    AC1: An active buyer can redeem available points and submit the order.
+    AC2: Insufficient points block order submission with the documented validation.
+    AC3: A failed payment callback can be retried without creating a duplicate order.
+    Produce the complete QA workflow and final test-case artifact.
+
+expect:
+  must_contain:
+    - "Requirement Understanding"
+    - "Source Coverage Matrix"
+    - "Review Conclusion"
+    - "final review"
+  must_not_contain:
+    - "TODO"
+    - "I cannot"

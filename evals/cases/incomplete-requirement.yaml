@@ -1,0 +1,18 @@
+id: incomplete-requirement
+title: "Incomplete requirement: usable draft with labelled gaps"
+description: "A one-line requirement returns an actionable analysis rather than invented behavior."
+
+input:
+  prompt: |
+    Use qa-test-workflow in requirements-review mode.
+    Requirement: the release adds points redemption. No acceptance criteria, prototype, or interface document is available.
+    Create a usable first-draft analysis and identify assumptions and missing decisions.
+
+expect:
+  must_contain:
+    - "Gaps and Ambiguities"
+    - "Questions to Resolve"
+    - "assumption"
+  must_not_contain:
+    - "TODO"
+    - "I cannot"

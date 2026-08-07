@@ -1,0 +1,20 @@
+id: requirements-review-basic
+title: "Requirements review: risk and testability analysis"
+description: "A partial requirement produces the six required analysis sections and actionable questions."
+
+input:
+  prompt: |
+    Use qa-test-workflow in requirements-review mode.
+    Story: buyers can redeem points at checkout; insufficient points must block submit; payment callback failures must be retryable.
+    AC only covers successful redemption.
+    Analyze gaps, risks, testability, and questions from a QA perspective.
+
+expect:
+  must_contain:
+    - "Requirement Understanding"
+    - "Gaps and Ambiguities"
+    - "Risk Assessment"
+    - "Questions to Resolve"
+  must_not_contain:
+    - "TODO"
+    - "I cannot"

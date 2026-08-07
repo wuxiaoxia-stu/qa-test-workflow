@@ -1,0 +1,20 @@
+id: test-case-review-basic
+title: "Test-case review: severity and retest order"
+description: "A happy-path-only case set receives evidence-backed severity findings and retest order."
+
+input:
+  prompt: |
+    Use qa-test-workflow in test-case-review mode.
+    Requirements require insufficient-points rejection and payment-callback retry.
+    Existing cases cover only successful points redemption and use vague expected results.
+    Review the cases with business impact, severity, missing high-risk scenarios, and retest order.
+
+expect:
+  must_contain:
+    - "Review Conclusion"
+    - "Critical Findings"
+    - "Business impact"
+    - "Fix Priority and Retest Order"
+  must_not_contain:
+    - "TODO"
+    - "I cannot"

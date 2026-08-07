@@ -1,0 +1,30 @@
+schema_version: v1alpha1
+
+environment:
+  type: none
+
+skills:
+  - source: local_path
+    path: .
+
+engine:
+  name: claude_code
+
+cases:
+  files:
+    - evals/cases/requirements-review-basic.yaml
+    - evals/cases/generation-full-workflow.yaml
+    - evals/cases/test-case-review-basic.yaml
+    - evals/cases/incomplete-requirement.yaml
+    - evals/cases/risk-priority.yaml
+  defaults:
+    timeout_seconds: 180
+    max_turns: 10
+    expect:
+      exit_code: 0
+      must_not_contain:
+        - "TODO"
+        - "I cannot"
+
+report:
+  formats: [json]

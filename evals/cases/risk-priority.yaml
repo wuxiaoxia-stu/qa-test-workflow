@@ -1,0 +1,20 @@
+id: risk-priority
+title: "Risk priority: release-gate ordering"
+description: "The review differentiates release blockers from quality improvements."
+
+input:
+  prompt: |
+    Use qa-test-workflow in test-case-review mode.
+    The requirements require authorization, idempotent callback retry, and balance integrity.
+    Existing cases only verify the successful user flow, plus one duplicate copy-editing case.
+    Return a release-gate review with Blocker/Critical/Major/Minor priorities and retest order.
+
+expect:
+  must_contain:
+    - "Blocker"
+    - "Critical"
+    - "Major"
+    - "Retest"
+  must_not_contain:
+    - "TODO"
+    - "I cannot"
