@@ -61,3 +61,14 @@ class SkillPackageTest(unittest.TestCase):
             self.assertIn("qa-test-workflow", text)
             self.assertNotIn("@skill", text)
             self.assertNotIn("install-skills", text)
+
+    def test_explicit_skill_invocation_defaults_to_test_case_generation(self):
+        root = Path(__file__).resolve().parents[1]
+        skill = (root / "SKILL.md").read_text(encoding="utf-8")
+        explicit_invocation_eval = (
+            root / "evals/cases/explicit-invocation-default-generation.yaml"
+        )
+
+        self.assertIn("explicitly invokes `qa-test-workflow`", skill)
+        self.assertIn("defaults to `test-case-generation`", skill)
+        self.assertTrue(explicit_invocation_eval.is_file())

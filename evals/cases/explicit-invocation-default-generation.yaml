@@ -1,0 +1,17 @@
+id: explicit-invocation-default-generation
+title: "Explicit skill invocation defaults to test-case generation"
+description: "Calling qa-test-workflow without a mode or action returns the full test-case-generation deliverable."
+
+input:
+  prompt: |
+    Use qa-test-workflow.
+    Requirement: A user can submit a redemption order when their account has sufficient points.
+
+expect:
+  must_contain:
+    - "Requirement Understanding"
+    - "Source Coverage Matrix"
+    - "Test Cases"
+  must_not_contain:
+    - "TODO"
+    - "I cannot"

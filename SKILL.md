@@ -16,10 +16,11 @@ Accept requirement documents, PRD, user stories, acceptance criteria, API/UI spe
 Select one mode before producing content.
 
 1. An explicitly named mode wins: `requirements-review`, `test-case-generation`, or `test-case-review`.
-2. Requests to generate, design, create, or supplement test cases use `test-case-generation` and run the full workflow.
-3. Requests to review, audit, or check existing test cases use `test-case-review`.
-4. Requests to analyze or review requirements, test points, ambiguity, or testability use `requirements-review`.
-5. When both requirements and existing cases are supplied without a clear action, ask one question to distinguish generation from review.
+2. When the user explicitly invokes `qa-test-workflow` without naming a mode or another action, defaults to `test-case-generation`. Run the full workflow and return the final test cases to the user.
+3. Requests to generate, design, create, or supplement test cases use `test-case-generation` and run the full workflow.
+4. Requests to review, audit, or check existing test cases use `test-case-review`.
+5. Requests to analyze or review requirements, test points, ambiguity, or testability use `requirements-review`.
+6. When both requirements and existing cases are supplied without a clear action, ask one question to distinguish generation from review, unless rule 2 applies.
 
 ## requirements-review
 
