@@ -7,6 +7,7 @@ REQUIRED_FILES = (
     "references/test-case-generation.md",
     "references/requirements-analysis/requirements-analysis.md",
     "references/test-case-review/test-case-review.md",
+    "scripts/test-case-generation/generate_test_points_xmind.py",
     "scripts/requirements-analysis/parse_formats.py",
     "scripts/test-case-review/run_review.py",
     "evals/eval.yaml",
@@ -36,6 +37,37 @@ class SkillPackageTest(unittest.TestCase):
 
         self.assertNotIn("invoke `requirements-analysis`", generation)
         self.assertNotIn("invoke `test-case-reviewer-plus`", generation)
+
+    def test_generation_adds_test_point_xmind_as_a_companion_artifact(self):
+        root = Path(__file__).resolve().parents[1]
+        skill = (root / "SKILL.md").read_text(encoding="utf-8")
+        generation = (root / "references/test-case-generation.md").read_text(
+            encoding="utf-8"
+        )
+        eval_case = (root / "evals/cases/generation-full-workflow.yaml").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("generate_test_points_xmind.py", skill)
+        self.assertIn("<需求名称>_测试点.xmind", skill)
+        self.assertIn("companion artifact", skill)
+        self.assertIn("## Test Point XMind Companion", generation)
+        self.assertIn("Confirmed", generation)
+        self.assertIn("Conditional", generation)
+        self.assertIn("Pending Confirmation", generation)
+        self.assertIn("does not replace", generation)
+        self.assertIn(
+            "Default generated test cases to an Excel workbook", skill
+        )
+        for existing_expectation in (
+            "Requirement Understanding",
+            "Source Coverage Matrix",
+            "Review Conclusion",
+            "final review",
+        ):
+            self.assertIn(existing_expectation, eval_case)
+        self.assertIn('- "测试点"', eval_case)
+        self.assertIn('- ".xmind"', eval_case)
 
     def test_late_requirement_supplements_and_separate_scope_are_preserved(self):
         root = Path(__file__).resolve().parents[1]

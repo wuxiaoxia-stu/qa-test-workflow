@@ -38,7 +38,11 @@ Follow these steps in order.
    - Keep confirmed hierarchy coverage and gap-derived candidate coverage separate. Do not add a candidate case ID to an L1/L2/L3 row's `Covered Test Case IDs`, create a `Gap` hierarchy level, or synthesize an L2/L3 node from a gap. Put candidate IDs only in the `Candidate Case Mapping`, using the documented ancestor path as context when one exists.
    - If the parent-child relationship is unclear, flag the hierarchy as a requirement gap before generating cases instead of silently assigning the behavior to the nearest top-level requirement.
 
-4. Extract only documented facts:
+4. Build and export the test-point XMind companion:
+   - Follow `Test Point XMind Companion` below after the requirements analysis and hierarchy exist, and before drafting detailed test cases.
+   - Regenerate the companion whenever later source material reopens the source inventory, requirements analysis, or hierarchy.
+
+5. Extract only documented facts:
    - Feature description and scope.
    - Explicit regression requirements such as "keep existing flow working" or "regression normal". Create confirmed regression cases using the published baseline as the oracle; do not discard them merely because the source does not enumerate every field or message.
    - Explicit permission, data-migration, cleanup, or configuration requirements. Missing configuration values or complete mappings limit the test data and can block execution, but do not erase the documented capability from coverage.
@@ -52,7 +56,7 @@ Follow these steps in order.
    - UI/UX behavior and visible messages.
    - Error handling behavior.
 
-5. Identify gaps and add controlled candidate coverage:
+6. Identify gaps and add controlled candidate coverage:
    - Distinguish an incomplete explicit requirement from an absent requirement. When the source states the behavior but omits an enum, timing, mapping, or exact fixture, create a confirmed conditional case that asserts only the stated behavior and lists the missing item as a blocking precondition or gap reference. Use a gap-derived candidate only when the behavior itself is absent from the source and an industry baseline supplies the proposed behavior.
    - A missing role matrix must not replace source-stated permission configuration or data-filtering cases with a single generic security candidate. Cover the stated permission behavior as confirmed conditional cases; reserve the candidate for unstated access semantics such as exact denial responses.
    - A missing cleanup mapping must not remove source-stated cleanup, isolation, or role-scope cases. Keep their expected results bounded by the published cleanup baseline and flag the unavailable mapping as a blocking prerequisite.
@@ -69,7 +73,7 @@ Use this gap format:
 > Gap Identified: Insufficient information in the supplied requirements to validate [specific scenario]. Recommend clarification from PO/BA.
 ```
 
-6. Design confirmed cases and eligible gap-derived candidate cases:
+7. Design confirmed cases and eligible gap-derived candidate cases:
    - For an explicit category partition, create positive coverage for named categories, exclusion coverage for named categories that belong elsewhere, and an aggregate disjointness/completeness check when the source requires a split without loss. For an open category such as "other self-operated channels", include a conditional case using one business-confirmed representative; if no representative is available, keep the case and mark its data prerequisite as the associated gap.
    - For explicitly required regression flows, create a case per named flow and relevant changed page. Expected results may compare with the release baseline when the requirement does not define a product-specific value.
    - For explicitly required permissions, configurations, migrations, or cleanups, cover the stated configuration, filtering/scope, direct access surfaces, and lifecycle or rerun behavior only where each behavior is source-stated. Mark missing product decisions as blocking gaps rather than deleting the coverage row.
@@ -85,7 +89,7 @@ Use this gap format:
    - For every candidate case, write the expected-result cell as `Candidate Expected Result (Industry Baseline, Pending Confirmation): [observable result]. Basis: [source, version, section/control]. Pending product decision: [specific missing rule].`
    - Do not use a candidate baseline to invent product-specific wording, values, timing, roles, error codes, user journeys, pricing, or business semantics. Mark the candidate as `Pending Confirmation` until PO/BA or the requirement owner explicitly adopts, replaces, or rejects it.
 
-7. Before final output, check coverage:
+8. Before final output, check coverage:
    - Add a Source Coverage Matrix that lists every source-inventory item, its direct requirement path, its status (`Covered`, `Conditional - blocked by gap`, `Gap only`, or `Non-requirement context`), and its covering case IDs. A document with an uncovered numbered section, table requirement, or figure-based permission item cannot be treated as complete.
    - Count `Conditional - blocked by gap` cases separately from gap-derived candidates. Conditional cases remain confirmed requirement coverage because their behavior is explicit; candidates do not.
    - Test-case count is not a coverage metric. A compact case set is acceptable only when the matrix shows that no independent behavior, category exclusion, required regression flow, permission capability, or data-cleanup capability was collapsed or omitted.
@@ -96,7 +100,7 @@ Use this gap format:
    - Count confirmed requirement coverage and gap-derived candidate coverage separately. Candidate cases do not satisfy confirmed acceptance-criterion coverage and cannot be used as the sole release gate.
    - List unmapped, ambiguous, incorrectly flattened, or baseline-unsuitable acceptance criteria as gaps.
 
-8. Mandatory post-generation review gate:
+9. Mandatory post-generation review gate:
    - Require the reviewer to reconcile the generated workbook against the Source Coverage Matrix, including all numbered sections and figure-derived behavior. The reviewer must flag any source item that was silently converted into a gap, candidate, or high-level combined case without explicit traceability.
    - Treat the generated cases as a draft until review findings have been processed. A test-case generation task is incomplete until the draft has been reviewed. Always complete this package's `test-case-review` phase after the coverage check, even when the user asks only for case generation and does not explicitly request a review.
    - Pass the generated artifact, the original requirements, the requirements analysis artifact, and any supplied technical notes, scope, risk, dependency, or defect-history context to the reviewer. The reviewer must cross-check cases against both the source requirement hierarchy and the analysis artifact's risks, gaps, testability impacts, and unanswered questions.
@@ -104,10 +108,10 @@ Use this gap format:
    - Follow `references/test-case-review/test-case-review.md` and its required output order. The review must include a Pass/Conditional Pass/Fail verdict; explicit Blocker/Critical findings or an explicit none; Major/Minor findings; positive, negative, and boundary coverage gaps; traceability and step/expectation quality; missing high-risk scenarios; business impact; fix priority and retest/regression order; and residual risks.
    - Review the exact generated draft. For Excel, review the workbook or use the review skill's existing parser/helper when needed; for Markdown or mind-map output, review the exact generated content.
 
-9. Apply review findings before final delivery:
+10. Apply review findings before final delivery:
    - After the review is complete, create a disposition for every finding. Apply each finding supported by the original requirements, confirmed facts in the requirements analysis artifact, or an applicable industry-baseline source by modifying the relevant case. Keep unsupported findings as documented gaps or residual risks instead of inventing behavior.
    - Rerun the coverage check after the revisions, then complete the `test-case-review` phase once more against the exact revised final artifact, original requirements, and requirements analysis artifact. The final review must confirm the revised cases, not only the original draft.
-   - The externally delivered test-case artifact must be the revised final version. Do not label or deliver the initial draft as final. Deliver the revised final test cases together with the final review report; provide the initial draft only when the user explicitly requests a before/after comparison.
+   - The externally delivered test-case artifact must be the revised final version. Do not label or deliver the initial draft as final. Deliver the revised final test cases and the test-point XMind companion together with the final review report; provide the initial draft only when the user explicitly requests a before/after comparison.
 
 ## Requirements Analysis Handoff
 
@@ -120,7 +124,62 @@ Use the requirements analysis artifact as the handoff contract between analysis,
 | Risk assessment and testability impact | Case priority, coverage focus, and reviewer high-risk-scenario checks |
 | Dependencies and impacts | Integration coverage only when the original requirement documents the behavior |
 
-The required execution order is: `requirements-review` -> draft test cases -> `test-case-review` -> revised test cases -> final `test-case-review` -> final test cases.
+The required execution order is: `requirements-review` -> test-point XMind companion -> draft test cases -> `test-case-review` -> revised test cases -> final `test-case-review` -> final delivery.
+
+## Test Point XMind Companion
+
+Every `test-case-generation` run produces `<需求名称>_测试点.xmind` after requirements analysis and before the detailed test-case draft. This is a companion artifact: it does not replace the detailed cases, change their Excel/Markdown/CSV/JSON/Word/XMind format, or add outputs to `requirements-review` or `test-case-review`.
+
+Use this hierarchy: requirement or release title -> functional module or deepest requirement -> test dimension -> atomic test point. A test point states concise coverage intent only; do not add test steps or detailed expected results.
+
+Each atomic test point must contain:
+
+- `id`: unique test-point ID.
+- `priority`: `P0`, `P1`, `P2`, or `P3`.
+- `status`: `Confirmed`, `Conditional`, or `Pending Confirmation`.
+- `source_id`: the source requirement ID or visible gap ID.
+- `title`: one concise behavior statement.
+
+Keep evidence classes distinct:
+
+- `Confirmed` traces to directly documented or explicitly confirmed behavior.
+- `Conditional` traces to documented behavior whose execution or complete assertion is blocked by a visible missing fixture, mapping, enum, or decision.
+- `Pending Confirmation` traces to a visible gap-derived candidate and cannot count as confirmed acceptance coverage.
+
+Create a UTF-8 JSON model with this shape:
+
+```json
+{
+  "title": "权益订单拆分",
+  "modules": [
+    {
+      "title": "订单拆分",
+      "dimensions": [
+        {
+          "title": "正常流程",
+          "test_points": [
+            {
+              "id": "TP-001",
+              "priority": "P0",
+              "status": "Confirmed",
+              "source_id": "REQ-1",
+              "title": "满足条件时生成拆分订单"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+Generate the companion with:
+
+```powershell
+python scripts/test-case-generation/generate_test_points_xmind.py <测试点模型.json> --output <需求名称>_测试点.xmind
+```
+
+The output is a real XMind ZIP package, not Markdown with an `.xmind`-like name. Keep the JSON model as an intermediate artifact unless the user explicitly requests it.
 
 ## Gap-Derived Candidate Cases
 
@@ -187,6 +246,8 @@ L1 大需求1
 
 Unless the user explicitly requests another presentation format, create and deliver an `.xlsx` workbook. Use the `spreadsheets:Spreadsheets` skill for workbook authoring, formatting, export, and visual verification.
 
+This default remains unchanged for detailed test cases. Generate the test-point XMind companion in addition to the workbook.
+
 The workbook must contain these four worksheets in this order:
 
 1. `说明与缺口`: source URL and source files, requirement summary, documented gaps, `Candidate Case Mapping`, execution prerequisites, and smoke exit criteria.
@@ -230,6 +291,8 @@ After the requirement-hierarchy block and before the case table, add a `Candidat
 ### Mind Map Mode
 
 Use this mode when the user asks for a "思维导图", "脑图", "导图", or a hierarchical test-case format. Return a Markdown nested list that can be read directly or imported into a mind-map tool.
+
+This explicit test-case presentation mode remains separate from the test-point XMind companion and does not replace it.
 
 - Start with one root node containing the feature name. Include a Jira ID only when the user explicitly requests Jira traceability.
 - Add a dedicated `需求缺口与候选用例` branch before the confirmed test-case branches when any requirement gaps exist. Place each gap-derived candidate case below its source gap with its baseline source and pending product decision.
