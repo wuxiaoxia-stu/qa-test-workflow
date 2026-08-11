@@ -13,7 +13,7 @@ Generated QA artifacts default to Simplified Chinese. API names, configuration k
 | Mode | Use it for | Main deliverable |
 | --- | --- | --- |
 | `requirements-review` | Reviewing a PRD, story, acceptance criteria, API/UI specification, or testability | Requirement understanding, gaps, risks, testability impact, questions, and next steps |
-| `test-case-generation` | Creating or supplementing cases from requirements | Traceable cases, coverage matrix, requirements analysis, and final case review |
+| `test-case-generation` | Creating or supplementing cases from requirements | Traceable cases, test-point XMind companion, coverage matrix, requirements analysis, and final case review |
 | `test-case-review` | Auditing an existing case set before execution or release | Severity-ranked findings, missing high-risk coverage, retest order, and residual risks |
 
 The skill selects a mode automatically. State a mode explicitly when the request contains both requirements and existing test cases but you want a specific outcome.
@@ -90,7 +90,7 @@ Generate Excel test cases for this API change, including requirements analysis a
 Audit these existing checkout test cases against the supplied acceptance criteria.
 ```
 
-For generation, the workflow first builds a source inventory and requirements analysis, then reviews the case draft before delivering the revised final cases. Confirmed requirements, data-blocked conditional cases, and gap-derived candidates remain separate. A candidate never counts as confirmed acceptance coverage.
+For generation, the workflow first builds a source inventory and requirements analysis, exports a test-point XMind companion, then reviews the case draft before delivering the revised final cases. The XMind file supplements rather than replaces the requested detailed-case format. Confirmed requirements, data-blocked conditional cases, and gap-derived candidates remain separate. A candidate never counts as confirmed acceptance coverage.
 
 ## Repository Layout
 
