@@ -16,6 +16,8 @@ expect:
     - "Source Coverage Matrix"
     - "Review Conclusion"
     - "final review"
+    - "测试点"
+    - ".xmind"
   must_not_contain:
     - "TODO"
     - "I cannot"
