@@ -17,6 +17,7 @@ cases:
     - evals/cases/test-case-review-basic.yaml
     - evals/cases/incomplete-requirement.yaml
     - evals/cases/risk-priority.yaml
+    - evals/cases/feishu-group-intake.yaml
     - evals/cases/explicit-invocation-default-generation.yaml
   defaults:
     timeout_seconds: 180

@@ -23,6 +23,7 @@ class SkillPackageTest(unittest.TestCase):
         self.assertIn("requirements-review", skill)
         self.assertIn("test-case-generation", skill)
         self.assertIn("test-case-review", skill)
+        self.assertNotIn(r"C:\Users", skill)
         self.assertNotIn("invoke `requirements-analysis`", skill)
         self.assertNotIn("invoke `test-case-reviewer-plus`", skill)
 
@@ -59,6 +60,8 @@ class SkillPackageTest(unittest.TestCase):
         self.assertIn(
             "Default generated test cases to an Excel workbook", skill
         )
+        self.assertIn("expected_result", generation)
+        self.assertIn("\u9884\u671f\u7ed3\u679c", skill)
         for existing_expectation in (
             "Requirement Understanding",
             "Source Coverage Matrix",
@@ -104,3 +107,23 @@ class SkillPackageTest(unittest.TestCase):
         self.assertIn("explicitly invokes `qa-test-workflow`", skill)
         self.assertIn("defaults to `test-case-generation`", skill)
         self.assertTrue(explicit_invocation_eval.is_file())
+
+    def test_feishu_group_intake_requires_exact_keyword_and_preserves_order(self):
+        root = Path(__file__).resolve().parents[1]
+        skill = (root / "SKILL.md").read_text(encoding="utf-8")
+        eval_case = (root / "evals/cases/feishu-group-intake.yaml").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("exact contiguous substring `\u98de\u4e66\u7fa4`", skill)
+        self.assertIn("`\u98de\u4e66` alone", skill)
+        self.assertIn("`Feishu group`", skill)
+        self.assertIn("`Lark group`", skill)
+        self.assertIn("\u98de\u4e66\u7fa4\u9700\u6c42\u6458\u8981", skill)
+        self.assertLess(
+            skill.index("\u98de\u4e66\u7fa4\u9700\u6c42\u6458\u8981"),
+            skill.index("pass the summary and its evidence references"),
+        )
+        self.assertIn("\u4ece\u98de\u4e66\u7fa4", eval_case)
+        self.assertIn("\u4e0d\u542b\u98de\u4e66\u7fa4", eval_case)
+        self.assertIn("\u4ec5\u542b\u98de\u4e66\u6216\u82f1\u6587\u8fd1\u4f3c\u8bcd", eval_case)

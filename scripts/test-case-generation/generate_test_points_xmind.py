@@ -7,7 +7,14 @@ import sys
 import zipfile
 
 
-REQUIRED_POINT_FIELDS = ("id", "priority", "status", "source_id", "title")
+REQUIRED_POINT_FIELDS = (
+    "id",
+    "priority",
+    "status",
+    "source_id",
+    "title",
+    "expected_result",
+)
 VALID_PRIORITIES = {"P0", "P1", "P2", "P3"}
 VALID_STATUSES = {"Confirmed", "Conditional", "Pending Confirmation"}
 
@@ -79,7 +86,8 @@ def build_content(data):
                 point_topics.append(
                     _topic(
                         f"{point['id']} [{point['priority']} | {point['status']} | "
-                        f"{point['source_id']}] {point['title']}",
+                        f"{point['source_id']}] {point['title']} | "
+                        f"预期结果: {point['expected_result']}",
                         topic_ids,
                     )
                 )

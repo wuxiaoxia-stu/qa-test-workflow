@@ -130,7 +130,7 @@ The required execution order is: `requirements-review` -> test-point XMind compa
 
 Every `test-case-generation` run produces `<需求名称>_测试点.xmind` after requirements analysis and before the detailed test-case draft. This is a companion artifact: it does not replace the detailed cases, change their Excel/Markdown/CSV/JSON/Word/XMind format, or add outputs to `requirements-review` or `test-case-review`.
 
-Use this hierarchy: requirement or release title -> functional module or deepest requirement -> test dimension -> atomic test point. A test point states concise coverage intent only; do not add test steps or detailed expected results.
+Use this hierarchy: requirement or release title -> functional module or deepest requirement -> test dimension -> atomic test point. A test point contains concise coverage intent plus one observable expected result; do not add test steps or detailed execution data.
 
 Each atomic test point must contain:
 
@@ -139,6 +139,7 @@ Each atomic test point must contain:
 - `status`: `Confirmed`, `Conditional`, or `Pending Confirmation`.
 - `source_id`: the source requirement ID or visible gap ID.
 - `title`: one concise behavior statement.
+- `expected_result`: one observable pass/fail result. For a `Pending Confirmation` point, use `Candidate Expected Result (Industry Baseline, Pending Confirmation): [observable result]`, name the baseline source, and state the pending product decision.
 
 Keep evidence classes distinct:
 
@@ -163,7 +164,8 @@ Create a UTF-8 JSON model with this shape:
               "priority": "P0",
               "status": "Confirmed",
               "source_id": "REQ-1",
-              "title": "满足条件时生成拆分订单"
+              "title": "满足条件时生成拆分订单",
+              "expected_result": "系统生成拆分订单，订单状态和明细符合需求定义。"
             }
           ]
         }

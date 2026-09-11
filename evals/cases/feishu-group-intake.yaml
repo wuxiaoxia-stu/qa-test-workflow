@@ -1,0 +1,26 @@
+id: feishu-group-intake
+title: "Feishu group exact-keyword intake before test-case generation"
+description: "The Feishu precondition runs only for the exact keyword and places the requirement summary before test cases."
+
+input:
+  prompt: |
+    从飞书群总结支付退款需求，然后输出测试用例。请保留消息证据、区分已确认和待确认内容，并按完整 QA 流程交付。
+
+expect:
+  must_contain:
+    - "飞书群需求摘要"
+    - "Confirmed"
+    - "Open Question"
+    - "requirements-review"
+    - "测试用例"
+  must_not_contain:
+    - "TODO"
+    - "I cannot"
+
+regression_cases:
+  - name: "不含飞书群时保持普通流程"
+    prompt: "根据这份 PRD 生成支付退款测试用例，不含任何飞书群来源。"
+    expect_no_feishu_intake: true
+  - name: "仅含飞书或英文近似词不触发精确关键词前置"
+    prompt: "从飞书或 Feishu group 总结需求并生成测试用例。"
+    expect_no_feishu_intake: true

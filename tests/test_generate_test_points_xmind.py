@@ -29,6 +29,7 @@ SAMPLE_INPUT = {
                             "status": "Confirmed",
                             "source_id": "REQ-1",
                             "title": "满足条件时生成拆分订单",
+                            "expected_result": "系统生成拆分订单，订单状态和明细符合需求定义。",
                         }
                     ],
                 }
@@ -122,7 +123,7 @@ class GenerateTestPointsXMindTest(unittest.TestCase):
                     "权益订单拆分",
                     "订单拆分",
                     "正常流程",
-                    "TP-001 [P0 | Confirmed | REQ-1] 满足条件时生成拆分订单",
+                    "TP-001 [P0 | Confirmed | REQ-1] 满足条件时生成拆分订单 | 预期结果: 系统生成拆分订单，订单状态和明细符合需求定义。",
                 ],
             )
 
@@ -157,7 +158,7 @@ class GenerateTestPointsXMindTest(unittest.TestCase):
         )
         cases = [(duplicate_id, "duplicate test point id: TP-001")]
 
-        for field in ("id", "priority", "status", "source_id", "title"):
+        for field in ("id", "priority", "status", "source_id", "title", "expected_result"):
             missing_field = json.loads(json.dumps(SAMPLE_INPUT))
             del missing_field["modules"][0]["dimensions"][0]["test_points"][0][field]
             cases.append((missing_field, f"test point field is required: {field}"))

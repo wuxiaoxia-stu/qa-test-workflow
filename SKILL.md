@@ -1,6 +1,6 @@
 ---
 name: qa-test-workflow
-description: End-to-end QA workflow for requirements review, test-point analysis, professional test-case generation, test-case review, coverage review, and release-gate QA. Use this skill whenever the user asks to analyze or review a PRD, user story, acceptance criteria, API/UI specification, generate or supplement test cases, audit existing test cases, or prepare QA deliverables for release, even when they do not name this skill.
+description: End-to-end QA workflow for requirements review, test-point analysis, professional test-case generation, test-case review, coverage review, and release-gate QA. Use this skill whenever the user asks to analyze or review a PRD, user story, acceptance criteria, API/UI specification, generate or supplement test cases, audit existing test cases, or prepare QA deliverables for release, even when they do not name this skill. For test-case generation requests, run the Feishu-group intake only when the raw user input contains the exact contiguous keyword `飞书群`; similar terms such as `飞书`, `Feishu group`, or `Lark group` do not activate that intake.
 ---
 
 # QA Test Workflow
@@ -10,6 +10,18 @@ Use this single workflow skill for requirement analysis, test-case generation, a
 ## Input
 
 Accept requirement documents, PRD, user stories, acceptance criteria, API/UI specifications, existing test cases, technical notes, release scope, defect history, dependencies, and constraints. Jira links and IDs are metadata only unless the user explicitly requests Jira traceability.
+
+## Feishu Group Intake (Exact Keyword Gate)
+
+Use this intake only when both conditions hold: the raw user input contains the exact contiguous substring `飞书群`, and the requested action is to generate or supplement test cases. The keyword is a necessary gate; do not activate this intake for `飞书` alone, `飞 书群`, `飞书 群`, `Feishu group`, `Lark group`, or another translation/near match. Explicit `requirements-review` and `test-case-review` modes retain their normal routing unless the user also explicitly asks to generate or supplement cases.
+
+1. Locate the installed `feishu-cli-messaging` skill, read its `SKILL.md`, then read `references/workflows/chat/workflow.md` relative to that skill directory before accessing messages. Use read-only operations only: never send, reply, react, pin, delete, or modify group membership.
+2. Resolve the group from a supplied `oc_...` chat ID. If the input gives only a group name or keyword, use `feishu-cli msg search-chats --query "<keyword>" -o json`; when multiple groups match, ask one concise clarification question before reading messages.
+3. Fetch the requested time window with `fetch_chat_history.py`, including thread replies. When no time window is specified, use the latest 24 hours and state that assumption. Save the raw JSON/timeline in a temporary directory for auditability; do not turn an unavailable or failed fetch into requirements.
+4. Before drafting cases, output a **飞书群需求摘要** containing: source group and time window; relevant participants/roles; confirmed requirement statements with message IDs and timestamps; decisions and constraints; explicit acceptance criteria; unresolved questions; and evidence gaps. Deduplicate repeated discussion without erasing conflicting statements.
+5. Classify each extracted item as `Confirmed`, `Assumption`, `Open Question`, or `Conflict`. Suggestions, speculation, and unresolved debate are not acceptance criteria. For conflicts, preserve both statements, identify the latest or authoritative evidence when available, and keep the item blocked until confirmed.
+6. Show the **飞书群需求摘要** first, then pass the summary and its evidence references into the existing `requirements-review` phase and continue the normal `test-case-generation` workflow. Keep Feishu-derived confirmed, conditional, and `Pending Confirmation` cases separate in traceability and coverage totals.
+7. If authentication, group access, chat ID, or the requested time window is unavailable, report the exact blocker and ask only for the missing input. Do not invent requirements or silently fall back to an unrelated group or document.
 
 ## Mode Routing
 
@@ -42,7 +54,7 @@ Select one mode before producing content.
 
 1. Read `references/test-case-generation.md`, `references/requirements-analysis/requirements-analysis.md`, and `references/test-case-review/test-case-review.md`.
 2. Build a complete source inventory and run `requirements-review` as the first internal phase. Treat later user messages that add, correct, or number a requirement as source evidence: reopen the analysis and append the item before drafting or revising cases.
-3. After the analysis exists and before drafting detailed cases, build the test-point model described in `references/test-case-generation.md`. Run `python scripts/test-case-generation/generate_test_points_xmind.py <测试点模型.json> --output <需求名称>_测试点.xmind`. This XMind file is a companion artifact for `test-case-generation` only; it does not replace or change the detailed test-case artifact or add default outputs to the other modes.
+3. After the analysis exists and before drafting detailed cases, build the test-point model described in `references/test-case-generation.md`. Every atomic test point must include an observable `expected_result`; candidate points must use the required pending-confirmation label and baseline. Run `python scripts/test-case-generation/generate_test_points_xmind.py <测试点模型.json> --output <需求名称>_测试点.xmind`. This XMind file is a companion artifact for `test-case-generation` only; it does not replace or change the detailed test-case artifact or add default outputs to the other modes.
 4. Produce a draft only after the analysis and test-point companion exist. Map confirmed cases to the deepest documented requirement; map gap-derived candidates to a visible gap and named industry baseline.
 5. Create the required coverage matrix, then run `test-case-review` against the exact draft.
 6. Record a disposition for every review finding. Apply only findings supported by source facts, confirmed analysis facts, or an applicable industry baseline; retain unsupported findings as gaps or residual risks.
@@ -55,6 +67,7 @@ Select one mode before producing content.
 - Default generated test cases to an Excel workbook. Use `spreadsheets:Spreadsheets` for workbook authoring and visual verification. Use Markdown, CSV, JSON, Word, or XMind only when explicitly requested.
 - The format rule above still governs the detailed test-case artifact. The test-point XMind is generated in addition and does not change any existing test-case format or explicit format request.
 - Keep confirmed requirement cases, conditional cases blocked by missing data, and gap-derived candidate cases separate in traceability and coverage totals.
+- Every detailed test case and every XMind test point must include an observable `预期结果`/`Expected Result`; do not deliver a test point with only a coverage title.
 - A candidate case must be labelled `Pending Confirmation`, trace to a visible gap, name its applicable industry baseline, and state the pending product decision. It cannot satisfy confirmed acceptance coverage or a release gate.
 - Treat an incomplete requirement as a usable first draft with explicit gaps; do not fabricate product behavior to make it look complete.
 

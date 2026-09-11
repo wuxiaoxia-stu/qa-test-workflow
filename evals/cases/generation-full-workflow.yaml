@@ -18,6 +18,7 @@ expect:
     - "final review"
     - "测试点"
     - ".xmind"
+    - "预期结果"
   must_not_contain:
     - "TODO"
     - "I cannot"
