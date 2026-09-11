@@ -87,10 +87,14 @@ Review this PRD for testability and list the release-blocking gaps.
 
 Generate Excel test cases for this API change, including requirements analysis and a final case review.
 
+从飞书群汇总最近 24 小时的退款需求，然后生成测试用例。
+
 Audit these existing checkout test cases against the supplied acceptance criteria.
 ```
 
-For generation, the workflow first builds a source inventory and requirements analysis, exports a test-point XMind companion, then reviews the case draft before delivering the revised final cases. The XMind file supplements rather than replaces the requested detailed-case format. Confirmed requirements, data-blocked conditional cases, and gap-derived candidates remain separate. A candidate never counts as confirmed acceptance coverage.
+For generation, the workflow first builds a source inventory and requirements analysis, exports a test-point XMind companion, then reviews the case draft before delivering the revised final cases. Every test point requires an observable expected result; the XMind generator rejects points without `expected_result`. The XMind file supplements rather than replaces the requested detailed-case format. Confirmed requirements, data-blocked conditional cases, and gap-derived candidates remain separate. A candidate never counts as confirmed acceptance coverage.
+
+The Feishu intake runs only when a test-case generation request contains the exact contiguous keyword `飞书群`. `飞书`, `Feishu group`, `Lark group`, and spaced variants do not activate it. The intake reads the latest 24 hours by default, produces a Feishu requirement summary before test cases, and requires an installed and authorized `feishu-cli-messaging` skill.
 
 ## Repository Layout
 
